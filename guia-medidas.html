@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia de Medidas — GD Premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Estilos específicos do Guia de Medidas */
+    .guia-page .container { max-width: 960px; }
+    .guia-hero {
+      padding: var(--space-3xl) 0;
+      text-align: center;
+    }
+    .guia-hero .secao-titulo { margin-bottom: var(--space-sm); }
+    .guia-hero p {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--texto-suave);
+      max-width: 36rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .guia-como-medir {
+      padding: var(--space-2xl) 0;
+    }
+    .guia-como-medir .secao-titulo {
+      text-align: center;
+      margin-bottom: var(--space-2xl);
+    }
+    .guia-passos {
+      display: grid;
+      gap: var(--space-2xl);
+      margin-bottom: var(--space-3xl);
+    }
+    @media (min-width: 768px) {
+      .guia-passos { grid-template-columns: repeat(3, 1fr); }
+    }
+    .guia-passo {
+      background: var(--fundo-card);
+      border: 1px solid var(--borda);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      text-align: center;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .guia-passo:hover {
+      border-color: rgba(201, 162, 39, 0.35);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(201, 162, 39, 0.08);
+    }
+    .guia-passo-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--ouro), var(--ouro-escuro));
+      color: var(--fundo);
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: var(--space-lg);
+      box-shadow: 0 4px 12px rgba(201, 162, 39, 0.4);
+    }
+    .guia-passo-icone {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto var(--space-md);
+      color: var(--texto-suave);
+      opacity: 0.95;
+    }
+    .guia-passo-icone .ruler { stroke: var(--ouro); }
+    .guia-passo-icone .dashed { stroke: var(--ouro); stroke-dasharray: 4 3; }
+    .guia-passo-icone .ruler-text { fill: var(--texto-suave); font: 600 8px/1 Montserrat, sans-serif; }
+    .guia-passo p {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--texto);
+    }
+    .guia-tabela-wrap {
+      background: var(--fundo-card);
+      border: 1px solid var(--borda);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2xl);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      overflow-x: auto;
+    }
+    .guia-tabela-titulo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--ouro-claro);
+      text-align: center;
+      margin: 0 0 var(--space-xl);
+      letter-spacing: 0.02em;
+    }
+    .guia-tabela {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+      gap: var(--space-md);
+      margin: 0 auto;
+      max-width: 100%;
+    }
+    @media (min-width: 640px) {
+      .guia-tabela {
+        grid-template-columns: repeat(9, 1fr);
+        gap: var(--space-lg);
+      }
+    }
+    .guia-tabela-item {
+      text-align: center;
+      padding: var(--space-md);
+      background: var(--fundo-elevado);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(201, 162, 39, 0.12);
+    }
+    .guia-tabela-num {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--texto);
+      display: block;
+      margin-bottom: var(--space-xs);
+    }
+    .guia-tabela-mm {
+      font-size: 0.8rem;
+      color: var(--texto-suave);
+    }
+    .guia-tabela-seta {
+      display: block;
+      margin-top: var(--space-xs);
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+      border-radius: 999px;
+      max-width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .guia-back {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-2xl);
+      font-size: 0.9rem;
+      color: var(--ouro-claro);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .guia-back:hover { color: var(--ouro); }
+  </style>
+</head>
+<body class="guia-page">
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-link" aria-label="GD Premium início">
+        <img src="assets/logogd.png" alt="GD Premium" class="logo-img" id="logo-img" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex';">
+        <span class="logo-placeholder" id="logo-placeholder">GD Premium</span>
+      </a>
+      <p class="tagline">Joias em ouro 18k</p>
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html#sobre" class="nav-link">Quem somos</a>
+        <a href="index.html#catalogo" class="nav-link">Catálogo</a>
+        <a href="guia-medidas.html" class="nav-link" aria-current="page">Guia de medidas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="guia-hero secao">
+      <div class="container">
+        <h1 class="secao-titulo">Guia de medidas</h1>
+        <p>Confira como medir seu anel e use a tabela para encontrar o tamanho ideal.</p>
+      </div>
+    </section>
+
+    <section class="guia-como-medir secao" aria-label="Como medir seu anel">
+      <div class="container">
+        <h2 class="secao-titulo">Como medir seu anel</h2>
+        <div class="guia-passos">
+          <article class="guia-passo">
+            <span class="guia-passo-num" aria-hidden="true">1</span>
+            <svg class="guia-passo-icone" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <!-- Anel: banda (dois círculos concêntricos) -->
+              <circle cx="40" cy="40" r="16" stroke-width="2.5" />
+              <circle cx="40" cy="40" r="11" stroke-width="1.2" />
+              <!-- Diamante quadrado no topo -->
+              <rect x="36" y="22" width="8" height="8" fill="currentColor" opacity="0.85" stroke="currentColor" stroke-width="1" />
+            </svg>
+            <p>Escolha um anel apropriado para o dedo que você quer tirar a medida interna.</p>
+          </article>
+          <article class="guia-passo">
+            <span class="guia-passo-num" aria-hidden="true">2</span>
+            <svg class="guia-passo-icone" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <!-- Anel -->
+              <circle cx="40" cy="40" r="16" stroke-width="2.5" />
+              <circle cx="40" cy="40" r="11" stroke-width="1.2" />
+              <rect x="36" y="22" width="8" height="8" fill="currentColor" opacity="0.85" stroke="currentColor" stroke-width="1" />
+              <!-- Limites internos (linhas finas acima e abaixo) -->
+              <line x1="29" y1="29" x2="51" y2="29" stroke="currentColor" stroke-width="0.8" opacity="0.7" />
+              <line x1="29" y1="51" x2="51" y2="51" stroke="currentColor" stroke-width="0.8" opacity="0.7" />
+              <!-- Régua horizontal dentro do anel -->
+              <line x1="28" y1="40" x2="52" y2="40" class="ruler" stroke-width="1.5" />
+              <line x1="29" y1="38" x2="29" y2="42" class="ruler" stroke-width="1" />
+              <line x1="34" y1="38.5" x2="34" y2="41.5" class="ruler" stroke-width="0.8" />
+              <line x1="40" y1="38" x2="40" y2="42" class="ruler" stroke-width="1" />
+              <line x1="46" y1="38.5" x2="46" y2="41.5" class="ruler" stroke-width="0.8" />
+              <line x1="52" y1="38" x2="52" y2="42" class="ruler" stroke-width="1" />
+              <text x="29" y="36" class="ruler-text" text-anchor="middle">0</text>
+              <text x="34" y="36" class="ruler-text" text-anchor="middle">1</text>
+              <text x="40" y="36" class="ruler-text" text-anchor="middle">2</text>
+              <text x="46" y="36" class="ruler-text" text-anchor="middle">3</text>
+            </svg>
+            <p>Com uma régua, meça a parte interna do anel escolhido, desconsiderando as bordas.</p>
+          </article>
+          <article class="guia-passo">
+            <span class="guia-passo-num" aria-hidden="true">3</span>
+            <svg class="guia-passo-icone" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <!-- Anel -->
+              <circle cx="40" cy="34" r="16" stroke-width="2.5" />
+              <circle cx="40" cy="34" r="11" stroke-width="1.2" />
+              <rect x="36" y="16" width="8" height="8" fill="currentColor" opacity="0.85" stroke="currentColor" stroke-width="1" />
+              <!-- Régua abaixo do anel -->
+              <line x1="18" y1="58" x2="62" y2="58" class="ruler" stroke-width="1.5" />
+              <line x1="18" y1="56" x2="18" y2="60" class="ruler" stroke-width="1" />
+              <line x1="26" y1="57" x2="26" y2="59" class="ruler" stroke-width="0.8" />
+              <line x1="34" y1="56" x2="34" y2="60" class="ruler" stroke-width="1" />
+              <line x1="40" y1="57" x2="40" y2="59" class="ruler" stroke-width="0.8" />
+              <line x1="46" y1="56" x2="46" y2="60" class="ruler" stroke-width="1" />
+              <line x1="54" y1="57" x2="54" y2="59" class="ruler" stroke-width="0.8" />
+              <line x1="62" y1="56" x2="62" y2="60" class="ruler" stroke-width="1" />
+              <text x="18" y="54" class="ruler-text" text-anchor="middle">0</text>
+              <text x="26" y="54" class="ruler-text" text-anchor="middle">1</text>
+              <text x="34" y="54" class="ruler-text" text-anchor="middle">2</text>
+              <text x="40" y="54" class="ruler-text" text-anchor="middle">3</text>
+              <text x="46" y="54" class="ruler-text" text-anchor="middle">4</text>
+              <text x="54" y="54" class="ruler-text" text-anchor="middle">5</text>
+              <!-- Linhas tracejadas verticais das bordas internas do anel até a régua -->
+              <line x1="29" y1="45" x2="29" y2="58" class="dashed" stroke-width="1.5" />
+              <line x1="51" y1="45" x2="51" y2="58" class="dashed" stroke-width="1.5" />
+            </svg>
+            <p>Compare a medida encontrada com a tabela abaixo e descubra o seu tamanho!</p>
+          </article>
+        </div>
+
+        <div class="guia-tabela-wrap">
+          <h3 class="guia-tabela-titulo">Tabela de tamanhos</h3>
+          <div class="guia-tabela" role="table" aria-label="Tamanhos de anel e diâmetro interno em milímetros">
+            <!-- Linha 1: 10–18 -->
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">10</span><span class="guia-tabela-mm">15,00 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">11</span><span class="guia-tabela-mm">15,25 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">12</span><span class="guia-tabela-mm">15,70 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">13</span><span class="guia-tabela-mm">16,20 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">14</span><span class="guia-tabela-mm">16,50 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">15</span><span class="guia-tabela-mm">16,75 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">16</span><span class="guia-tabela-mm">17,15 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">17</span><span class="guia-tabela-mm">17,50 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">18</span><span class="guia-tabela-mm">17,75 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <!-- Linha 2: 19–27 -->
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">19</span><span class="guia-tabela-mm">18,10 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">20</span><span class="guia-tabela-mm">18,40 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">21</span><span class="guia-tabela-mm">18,95 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">22</span><span class="guia-tabela-mm">19,40 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">23</span><span class="guia-tabela-mm">19,60 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">24</span><span class="guia-tabela-mm">20,00 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">25</span><span class="guia-tabela-mm">20,35 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">26</span><span class="guia-tabela-mm">20,70 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">27</span><span class="guia-tabela-mm">21,00 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <!-- Linha 3: 28–33 -->
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">28</span><span class="guia-tabela-mm">21,30 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">29</span><span class="guia-tabela-mm">21,65 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">30</span><span class="guia-tabela-mm">21,90 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">31</span><span class="guia-tabela-mm">22,10 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">32</span><span class="guia-tabela-mm">22,60 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+            <div class="guia-tabela-item" role="cell"><span class="guia-tabela-num">33</span><span class="guia-tabela-mm">22,90 mm</span><span class="guia-tabela-seta" aria-hidden="true"></span></div>
+          </div>
+        </div>
+
+        <div style="text-align: center;">
+          <a href="index.html" class="guia-back">← Voltar ao site</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© GD Premium — Ouro & Joalheria</p>
+    </div>
+  </footer>
+</body>
+</html>

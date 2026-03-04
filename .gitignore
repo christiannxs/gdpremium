@@ -1,0 +1,26 @@
+# Ambiente virtual Python
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Variáveis de ambiente (se usar no futuro)
+.env
+.env.local
