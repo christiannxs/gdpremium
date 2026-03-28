@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://gdpremium.com.br"),
   title: "GD Premium — Joias em Ouro 18k | Catálogo Exclusivo",
   description: "A GD Premium oferece joias em ouro 18k com garantia vitalícia. Alianças, anéis e peças exclusivas com atendimento personalizado e envio para todo o Brasil.",
   keywords: ["joias", "ouro 18k", "alianças", "anéis", "gd premium", "joalheria", "cariri"],
