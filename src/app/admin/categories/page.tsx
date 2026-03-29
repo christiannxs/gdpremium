@@ -1,41 +1,69 @@
 "use client";
 
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Trash, Plus, FolderTree, Pencil, X } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+import { toast } from "sonner";
 
 export default function CategoriesAdmin() {
-  const categories = useQuery(api.categories.get as any);
-  const create = useMutation(api.categories.create as any);
-  const update = useMutation(api.categories.update as any);
-  const remove = useMutation(api.categories.remove as any);
-
+  const [categories, setCategories] = useState<any[] | undefined>(undefined);
   const [newName, setNewName] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const supabase = createClient();
 
-  const getAdminToken = () => {
-    if (typeof document === 'undefined') return "";
-    const match = document.cookie.match(/(^| )admin-token=([^;]+)/);
-    return match ? match[2] : "";
+  const fetchCategories = async () => {
+    const { data } = await supabase.from('categories').select('*').order('created_at', { ascending: true });
+    setCategories(data || []);
   };
+
+  useEffect(() => {
+    fetchCategories();
+  }, [supabase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newName.trim()) return;
-    const token = getAdminToken();
+    setIsSubmitting(true);
     
     if (editingId) {
-      await update({ id: editingId, name: newName, token });
-      setEditingId(null);
+      const { error } = await supabase.from('categories').update({ name: newName }).eq('id', editingId);
+      if (error) { 
+        toast.error("Erro ao atualizar!"); 
+      } else {
+        toast.success("Categoria atualizada");
+        setEditingId(null);
+        setNewName("");
+        fetchCategories();
+      }
     } else {
-      await create({ name: newName, token });
+      const { error } = await supabase.from('categories').insert([{ name: newName }]);
+      if (error) { 
+        toast.error("Erro ao criar!"); 
+      } else {
+        toast.success("Categoria criada");
+        setEditingId(null);
+        setNewName("");
+        fetchCategories();
+      }
     }
-    
-    setNewName("");
+    setIsSubmitting(false);
+  };
+
+  const removeCategory = async (id: string) => {
+    if(confirm("Tem certeza que deseja excluir esta categoria? Cuidado: isso pode excluir os produtos nela atrelados se houver configuração de cascata.")) {
+      const { error } = await supabase.from('categories').delete().eq('id', id);
+      if (error) {
+        toast.error("Erro ao deletar: " + error.message);
+      } else {
+        toast.success("Categoria excluída");
+        fetchCategories();
+      }
+    }
   };
 
   return (
@@ -69,7 +97,7 @@ export default function CategoriesAdmin() {
                 />
               </div>
               <div className="flex gap-2">
-                <Button type="submit" disabled={!newName.trim()} className="flex-1">
+                <Button type="submit" disabled={!newName.trim() || isSubmitting} className="flex-1">
                   {editingId ? "Atualizar Categoria" : "Adicionar Categoria"}
                 </Button>
                 {editingId && (
@@ -114,7 +142,7 @@ export default function CategoriesAdmin() {
             ) : (
               <ul className="divide-y divide-neutral-100 rounded-md border border-neutral-100">
                 {categories.map((cat: any) => (
-                  <li key={cat._id} className="flex justify-between items-center p-4 hover:bg-neutral-50/50 transition-colors group">
+                  <li key={cat.id} className="flex justify-between items-center p-4 hover:bg-neutral-50/50 transition-colors group">
                     <span className="font-medium text-neutral-700 group-hover:text-neutral-900 transition-colors">{cat.name}</span>
                     <div className="flex items-center gap-1">
                       <Button 
@@ -122,7 +150,7 @@ export default function CategoriesAdmin() {
                         size="icon"
                         className="text-neutral-400 hover:text-blue-600 hover:bg-blue-50"
                         onClick={() => {
-                          setEditingId(cat._id);
+                          setEditingId(cat.id);
                           setNewName(cat.name);
                         }}
                       >
@@ -132,11 +160,7 @@ export default function CategoriesAdmin() {
                         variant="ghost" 
                         size="icon"
                         className="text-neutral-400 hover:text-red-600 hover:bg-red-50"
-                        onClick={() => {
-                          if(confirm("Tem certeza que deseja excluir esta categoria? Os produtos atrelados poderão ficar sem categoria validada.")) {
-                            remove({ id: cat._id, token: getAdminToken() });
-                          }
-                        }}
+                        onClick={() => removeCategory(cat.id)}
                       >
                         <Trash className="w-4 h-4" />
                       </Button>

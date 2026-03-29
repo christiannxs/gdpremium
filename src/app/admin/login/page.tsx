@@ -1,19 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Lock, Mail, Loader2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
   const router = useRouter();
-  const login = useMutation(api.auth.login);
-  const setupAdmins = useMutation(api.auth.setupAdmins);
+  const supabase = createClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -25,16 +23,20 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      const result = await login({ email, password });
-      // Salvar o token no cookie (expira em 7 dias)
-      const expires = new Date();
-      expires.setDate(expires.getDate() + 7);
-      document.cookie = `admin-token=${result.token}; path=/; expires=${expires.toUTCString()}; SameSite=Strict`;
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        throw error;
+      }
       
       toast.success("Acesso autorizado!");
       router.push("/admin/products");
+      router.refresh();
     } catch (err: any) {
-      setError(err.message || "E-mail ou senha incorretos.");
+      setError(err.message === "Invalid login credentials" ? "E-mail ou senha incorretos." : err.message);
       toast.error("Erro ao entrar");
     } finally {
       setIsLoading(false);
@@ -54,7 +56,7 @@ export default function LoginPage() {
           <CardHeader className="space-y-1 text-center">
             <CardTitle className="text-2xl font-bold tracking-tight text-neutral-900">Bem-vindo de volta</CardTitle>
             <CardDescription className="text-neutral-500">
-              Entre com suas credenciais para gerenciar o catálogo.
+              Entre com suas credenciais do Supabase.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 mt-2">

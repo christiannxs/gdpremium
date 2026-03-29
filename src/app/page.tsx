@@ -1,18 +1,26 @@
 "use client";
 
-import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Diamond, Package, Image as ImageIcon, LayoutGrid, ChevronRight } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function Home() {
-  const categories = useQuery(api.categories.get);
+  const [categories, setCategories] = useState<any[] | undefined>(undefined);
+  const [products, setProducts] = useState<any[] | undefined>(undefined);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   
-  const products = useQuery(
-    selectedCategory ? api.products.getByCategory : api.products.getAll,
-    selectedCategory ? { categoryId: selectedCategory as any } : ({} as any)
-  );
+  const supabase = createClient();
+
+  useEffect(() => {
+    async function loadData() {
+      const { data: cats } = await supabase.from('categories').select('*').order('display_order', { ascending: true });
+      const { data: prods } = await supabase.from('products').select('*').order('display_order', { ascending: true });
+      
+      setCategories(cats || []);
+      setProducts(prods || []);
+    }
+    loadData();
+  }, []);
 
   return (
     <>
@@ -115,9 +123,9 @@ export default function Home() {
                     </button>
                     {categories.map((cat: any) => (
                       <button 
-                        key={cat._id}
-                        className={`filtro-btn ${selectedCategory === cat._id ? 'ativo' : ''}`}
-                        onClick={() => setSelectedCategory(cat._id)}
+                        key={cat.id}
+                        className={`filtro-btn ${selectedCategory === cat.id ? 'ativo' : ''}`}
+                        onClick={() => setSelectedCategory(cat.id)}
                       >
                         {cat.name}
                       </button>
@@ -137,13 +145,13 @@ export default function Home() {
               ) : (
                 <div className="espaco-catalogo">
                   {categories
-                    .filter(cat => !selectedCategory || selectedCategory === cat._id)
+                    .filter(cat => !selectedCategory || selectedCategory === cat.id)
                     .map((cat: any) => {
-                      const catProducts = products.filter((p: any) => p.categoryId === cat._id);
+                      const catProducts = products.filter((p: any) => p.category_id === cat.id);
                       if (catProducts.length === 0) return null;
                       
                       return (
-                        <div key={cat._id} className="catalogo-bloco mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                        <div key={cat.id} className="catalogo-bloco mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
                           <h3 className="catalogo-bloco-titulo">
                             <span className="catalogo-bloco-nome">{cat.name}</span>
                             <span className="catalogo-bloco-contagem">{catProducts.length} peças</span>
@@ -151,10 +159,10 @@ export default function Home() {
                           
                           <div className="grade-produtos">
                             {catProducts.map((p: any) => (
-                              <div key={p._id} className="produto-card">
+                              <div key={p.id} className="produto-card">
                                 <div className="produto-img-wrap">
-                                  {p.imageUrl ? (
-                                    <img src={p.imageUrl} alt={p.title} loading="lazy" />
+                                  {p.image_url ? (
+                                    <img src={p.image_url} alt={p.title} loading="lazy" />
                                   ) : (
                                     <div className="no-image"><ImageIcon /></div>
                                   )}

@@ -1,5 +1,5 @@
 import "./globals.css";
-import ConvexClientProvider from "./ConvexClientProvider";
+
 import { Toaster } from "sonner";
 import { Metadata } from "next";
 
@@ -49,10 +49,10 @@ export default function RootLayout({
         <link rel="stylesheet" href="/styles.css" />
       </head>
       <body>
-        <ConvexClientProvider>
+        <main>
           {children}
-          <Toaster position="top-center" richColors />
-        </ConvexClientProvider>
+        </main>
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   );

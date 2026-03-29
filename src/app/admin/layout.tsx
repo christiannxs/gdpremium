@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import { useRouter, usePathname } from "next/navigation";
-import { User, LogOut, Loader2, ChevronRight, LayoutDashboard } from "lucide-react";
+import { User, LogOut, Loader2, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AdminLayout({
   children,
@@ -15,43 +14,34 @@ export default function AdminLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [token, setToken] = useState<string | null>(null);
-  const logout = useMutation(api.auth.logout);
-  const session = useQuery(api.auth.checkSession, token ? { token } : "skip" as any);
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const supabase = createClient();
   
   const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
-    // Pegar token do cookie
-    const match = document.cookie.match(/(^| )admin-token=([^;]+)/);
-    const savedToken = match ? match[2] : null;
-    
-    if (savedToken) {
-      setToken(savedToken);
-    } else if (!isLoginPage) {
-      router.push("/admin/login");
+    async function checkAuth() {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+      setLoading(false);
     }
-  }, [isLoginPage, router]);
+    checkAuth();
 
-  useEffect(() => {
-    // Se a sessão for verificada e for nula (e não estivermos na página de login), redirecionar
-    if (token && session === null && !isLoginPage) {
-      toast.error("Sessão expirada");
-      router.push("/admin/login");
-    }
-  }, [session, token, isLoginPage, router]);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
 
   const handleLogout = async () => {
-    if (token) {
-      await logout({ token });
-      document.cookie = "admin-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-      router.push("/admin/login");
-      toast.success("Sessão encerrada");
-    }
+    await supabase.auth.signOut();
+    router.push("/admin/login");
+    toast.success("Sessão encerrada");
   };
 
-  // Se estiver carregando a sessão e não for a página de login, mostrar loader
-  if (!isLoginPage && token && session === undefined) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-neutral-50">
         <Loader2 className="h-8 w-8 animate-spin text-neutral-400" />
@@ -59,14 +49,12 @@ export default function AdminLayout({
     );
   }
 
-  // Se não estiver logado e não for a login page, não renderiza nada até o redirecionamento
-  if (!isLoginPage && !token) {
-    return null;
-  }
-
-  // Layout da página de login é limpo
   if (isLoginPage) {
     return <>{children}</>;
+  }
+
+  if (!user && !isLoginPage) {
+    return null; // A proteção real acontece no roteamento do middleware agora
   }
 
   return (
@@ -78,7 +66,7 @@ export default function AdminLayout({
                Painel
             </div>
             <ChevronRight className="w-4 h-4 text-neutral-300" />
-            <span className="text-neutral-900 font-semibold">{session?.email || "Administrador"}</span>
+            <span className="text-neutral-900 font-semibold">{user?.email || "Administrador"}</span>
           </div>
 
           <nav className="hidden md:flex items-center gap-4 border-l pl-6 border-neutral-200">
