@@ -570,6 +570,7 @@ body {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
   overflow: hidden;
 }
 
@@ -771,6 +772,7 @@ body {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
   overflow: hidden;
   text-align: center;
 }
@@ -1289,29 +1291,267 @@ body::before {
   box-shadow: 0 -18px 60px rgba(0, 0, 0, 0.85);
 }
 
+@media (max-width: 780px) {
+  /* === Hero: remove left margin that causes overflow on mobile === */
+  .hero-inner {
+    margin-left: var(--space-md);
+    margin-right: var(--space-md);
+    padding: var(--space-2xl) 0;
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 640px) {
+  /* === Prevent horizontal overflow globally === */
+  html, body {
+    overflow-x: hidden;
+  }
+
   .container::before {
     display: none;
   }
 
+  /* === Hero === */
   .hero {
-    background: url("assets/fotohero-mobile.jpg") 75% center / cover no-repeat;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(5, 4, 3, 0.80) 0%,
+        rgba(5, 4, 3, 0.60) 50%,
+        rgba(5, 4, 3, 0.80) 100%
+      ),
+      url("assets/fotohero-mobile.jpg") center center / cover no-repeat;
+    min-height: 100svh;
+    align-items: flex-end;
+    padding-bottom: var(--space-2xl);
   }
 
   .hero-inner {
     grid-template-columns: 1fr;
     text-align: left;
     justify-items: start;
+    margin-left: 0;
+    margin-right: 0;
+    padding: var(--space-xl) var(--space-md);
+    max-width: 100%;
   }
 
   .hero-text {
     text-align: left;
   }
 
+  .hero h1 {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+    letter-spacing: 0.06em;
+  }
+
   .hero h1::after {
     margin-inline: 0;
   }
+
+  .hero-desc {
+    font-size: 0.95rem;
+  }
+
+  .hero-cta {
+    padding: 0.75rem 1.75rem;
+    font-size: 0.82rem;
+    /* Garante touch target >= 44px */
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* === Header/Nav === */
+  .header-inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem var(--space-md);
+  }
+
+  .tagline {
+    display: none; /* oculta em telas muito pequenas para economizar espaço */
+  }
+
+  .nav {
+    width: 100%;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-link {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    padding: 0.3rem 0.2rem;
+    /* touch target */
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* === Seções === */
+  .secao {
+    padding: 2.5rem 0;
+  }
+
+  .secao-titulo {
+    font-size: clamp(1.4rem, 6vw, 1.8rem);
+    margin-bottom: 2rem;
+  }
+
+  /* === Sobre === */
+  .sobre-card {
+    padding: var(--space-lg);
+  }
+
+  .sobre-foto-wrap {
+    max-width: 260px;
+  }
+
+  /* === Diferenciais: 2 colunas em mobile === */
+  .diferenciais-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md);
+  }
+
+  .diferencial-card {
+    padding: var(--space-md);
+  }
+
+  /* === Catálogo === */
+  .catalogo-bloco {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  /* Grade de produtos: 2 colunas fixas em mobile */
+  .grade-produtos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md);
+  }
+
+  /* === Filtros: scroll horizontal se precisar === */
+  .filtros-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+
+  .filtros {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .filtros-wrap {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .filtros-wrap::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filtro-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    /* touch target */
+    min-height: 44px;
+    padding: 0 1.1rem;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* === Cards de produto === */
+  .produto-card:hover {
+    /* Desabilita hover translate em touch (não tem hover real) */
+    transform: none;
+  }
+
+  .produto-titulo {
+    font-size: 0.85rem;
+    padding: var(--space-sm) var(--space-sm) var(--space-md);
+  }
+
+  .produto-info {
+    padding: var(--space-sm) var(--space-sm) var(--space-md);
+  }
+
+  .produto-zap {
+    /* touch target mínimo */
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    font-size: 0.78rem;
+    padding: 0.2rem 0;
+  }
+
+  /* Dica sempre visível em mobile (sem hover) */
+  .produto-card-dica {
+    opacity: 1;
+    transform: translateY(0);
+    font-size: 0.7rem;
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  /* === Prova social === */
+  .prova-social-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .prova-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .prova-numero {
+    font-size: 2rem;
+  }
+
+  /* === Loading grid === */
+  .loading-grid,
+  .produtos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md);
+  }
 }
+
+/* === WhatsApp button: tooltip para cima em mobile (evita sair da tela) === */
+@media (max-width: 480px) {
+  /* O botão WhatsApp usa classes Tailwind inline no JSX.
+     Sobrescrevemos o tooltip com CSS de posicionamento superior */
+  a[aria-label="Falar no WhatsApp"] span {
+    right: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(-4px) !important;
+    bottom: calc(100% + 0.5rem) !important;
+    top: auto !important;
+    margin-right: 0 !important;
+    white-space: nowrap;
+  }
+
+  a[aria-label="Falar no WhatsApp"]:hover span,
+  a[aria-label="Falar no WhatsApp"]:focus span {
+    transform: translateX(-50%) translateY(0) !important;
+    opacity: 1 !important;
+  }
+}
+
 /* ===== Estilos para o Catálogo Dinâmico (Convex) ===== */
 
 .filtros-container {
