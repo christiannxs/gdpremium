@@ -63,8 +63,7 @@ const AppleIcon = () => (
 );
 
 export default function LinkBio() {
-  const whatsapp1 = "5588988054374";
-  const whatsapp2 = ""; // TODO: Add second number
+  const whatsappUrl = "https://wa.me/5588988054374?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20um%20atendente%21";
   const instagram = "gd.premium";
   const address = "Rua Radialista Edesio de Oliveira 80- Centro, Juazeiro do Norte 63050-050";
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
@@ -119,9 +118,9 @@ export default function LinkBio() {
           <ChevronRight size={20} className="text-[#c9a227]/20 group-hover:text-[#c9a227] group-hover:translate-x-1 transition-all" />
         </Link>
 
-        {/* WhatsApp 1 */}
+        {/* WhatsApp */}
         <Link 
-          href={`https://wa.me/${whatsapp1}`}
+          href={whatsappUrl}
           target="_blank"
           className="group relative flex items-center gap-4 w-full p-4.5 bg-[#1a1916] border border-[#c9a227]/10 rounded-2xl transition-all duration-500 hover:bg-[#1a1916] hover:border-[#c9a227]/40 hover:-translate-y-1 active:scale-[0.98] shadow-2xl shadow-black/80 overflow-hidden"
         >
@@ -130,25 +129,8 @@ export default function LinkBio() {
             <WhatsAppIcon />
           </div>
           <div className="flex-1">
-            <h2 className="font-semibold text-[#f5f0e6] group-hover:text-[#e5d4a1] transition-colors">Fale Conosco (Opção 1)</h2>
-            <p className="text-[0.7rem] text-[#a39e8f] group-hover:text-[#a39e8f]/80 transition-colors">Atendimento comercial e vendas</p>
-          </div>
-          <ChevronRight size={20} className="text-[#c9a227]/20 group-hover:text-[#c9a227] group-hover:translate-x-1 transition-all" />
-        </Link>
-
-        {/* WhatsApp 2 */}
-        <Link 
-          href={whatsapp2 ? `https://wa.me/${whatsapp2}` : "#"}
-          target="_blank"
-          className={`group relative flex items-center gap-4 w-full p-4.5 bg-[#1a1916] border border-[#c9a227]/10 rounded-2xl transition-all duration-500 hover:bg-[#1a1916] hover:border-[#c9a227]/40 hover:-translate-y-1 active:scale-[0.98] shadow-2xl shadow-black/80 overflow-hidden ${!whatsapp2 && 'opacity-50 cursor-not-allowed'}`}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-[#25D366]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#25D366]/20 to-[#25D366]/5 text-[#25D366] group-hover:shadow-[0_0_20px_rgba(37,211,102,0.2)] transition-all">
-            <WhatsAppIcon />
-          </div>
-          <div className="flex-1">
-            <h2 className="font-semibold text-[#f5f0e6] group-hover:text-[#e5d4a1] transition-colors">Fale Conosco (Opção 2)</h2>
-            <p className="text-[0.7rem] text-[#a39e8f] group-hover:text-[#a39e8f]/80 transition-colors">{whatsapp2 ? "Linha alternativa de atendimento" : "Número em breve"}</p>
+            <h2 className="font-semibold text-[#f5f0e6] group-hover:text-[#e5d4a1] transition-colors">Fale Conosco</h2>
+            <p className="text-[0.7rem] text-[#a39e8f] group-hover:text-[#a39e8f]/80 transition-colors">Atendimento exclusivo via WhatsApp</p>
           </div>
           <ChevronRight size={20} className="text-[#c9a227]/20 group-hover:text-[#c9a227] group-hover:translate-x-1 transition-all" />
         </Link>
@@ -171,9 +153,6 @@ export default function LinkBio() {
 
         {/* Address Card */}
         <div className="mt-4 p-6 bg-[#1a1916] border border-[#c9a227]/10 rounded-3xl shadow-2xl shadow-black/80 backdrop-blur-sm relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <MapPinIcon />
-          </div>
           <div className="flex items-start gap-4 mb-6 relative z-10">
             <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#c9a227]/10 text-[#c9a227]">
               <MapPinIcon />
