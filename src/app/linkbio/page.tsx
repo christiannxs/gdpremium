@@ -50,12 +50,25 @@ const ExternalLinkIcon = () => (
   </svg>
 );
 
+const GoogleIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+    <path d="M12.48 10.92v3.28h7.84c-.24 1.84-2.21 5.39-7.84 5.39-4.84 0-8.79-4.01-8.79-8.96s3.95-8.96 8.79-8.96c2.75 0 4.59 1.15 5.64 2.16l2.58-2.5C18.89 1.45 15.93 0 12.48 0 5.58 0 0 5.58 0 12.48s5.58 12.48 12.48 12.48c7.2 0 11.97-5.06 11.97-12.18 0-.82-.09-1.44-.21-2.06h-11.76z"/>
+  </svg>
+);
+
+const AppleIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.08-.46-2.07-.48-3.2 0-1.44.61-2.02.43-2.92-.45-4.25-4.14-3.63-10.74 1.15-11.05 1.25.07 2.17.71 2.85.71.7 0 1.94-.87 3.4-.73 1.58.11 2.76.71 3.55 1.8-3.28 1.95-2.73 6.13.56 7.46-.7 1.63-1.48 3.23-2.31 3.91zM12.03 7.25c-.13-2.23 1.73-4.22 3.93-4.58.21 2.22-1.95 4.38-3.93 4.58z"/>
+  </svg>
+);
+
 export default function LinkBio() {
   const whatsapp1 = "5588988054374";
   const whatsapp2 = ""; // TODO: Add second number
   const instagram = "gd.premium";
-  const address = "Cariri - Ceará, Brasil"; // TODO: Add real address
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  const address = "Rua Radialista Edesio de Oliveira 80- Centro, Juazeiro do Norte 63050-050";
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  const appleMapsUrl = `https://maps.apple.com/?q=${encodeURIComponent(address)}`;
 
   const copyAddress = () => {
     navigator.clipboard.writeText(address);
@@ -167,24 +180,36 @@ export default function LinkBio() {
             </div>
             <div className="flex-1">
               <h2 className="font-display text-2xl text-[#e5d4a1] mb-1">Nosso Local</h2>
-              <p className="text-[0.8rem] text-[#a39e8f] leading-relaxed max-w-[200px]">{address}</p>
+              <p className="text-[0.8rem] text-[#a39e8f] leading-relaxed">{address}</p>
             </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3 relative z-10">
             <button 
               onClick={copyAddress}
-              className="flex items-center justify-center gap-2 py-3 px-4 bg-[#22211d] border border-[#c9a227]/10 rounded-xl text-[0.7rem] font-semibold text-[#a39e8f] hover:text-[#e5d4a1] hover:border-[#c9a227]/30 transition-all active:scale-95 uppercase tracking-wider"
+              className="flex items-center justify-center w-10 h-10 bg-[#22211d] border border-[#c9a227]/10 rounded-xl text-[#a39e8f] hover:text-[#e5d4a1] hover:border-[#c9a227]/30 transition-all active:scale-95 shadow-lg shadow-black/20"
+              title="Copiar endereço"
             >
               <CopyIcon />
-              Copiar
             </button>
+          </div>
+          <div className="grid grid-cols-2 gap-3 relative z-10">
             <Link 
-              href={mapsUrl}
+              href={googleMapsUrl}
               target="_blank"
-              className="flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-br from-[#c9a227] to-[#9a7b0a] rounded-xl text-[0.7rem] font-bold text-[#0f0e0c] hover:brightness-110 transition-all active:scale-95 shadow-lg shadow-[#c9a227]/10 uppercase tracking-wider"
+              className="flex items-center justify-center gap-3 py-3.5 px-4 bg-[#22211d] border border-[#c9a227]/10 rounded-xl text-[0.7rem] font-bold text-[#a39e8f] hover:text-[#e5d4a1] hover:border-[#c9a227]/30 transition-all active:scale-95 shadow-lg shadow-black/20 uppercase tracking-wider group/btn"
             >
-              <ExternalLinkIcon />
-              Navegar
+              <div className="w-5 h-5 flex items-center justify-center group-hover/btn:scale-110 transition-transform">
+                <GoogleIcon />
+              </div>
+              Google Maps
+            </Link>
+            <Link 
+              href={appleMapsUrl}
+              target="_blank"
+              className="flex items-center justify-center gap-3 py-3.5 px-4 bg-gradient-to-br from-[#c9a227] to-[#9a7b0a] rounded-xl text-[0.7rem] font-bold text-[#0f0e0c] hover:brightness-110 transition-all active:scale-95 shadow-lg shadow-[#c9a227]/10 uppercase tracking-wider group/btn"
+            >
+              <div className="w-5 h-5 flex items-center justify-center group-hover/btn:scale-110 transition-transform">
+                <AppleIcon />
+              </div>
+              Apple Maps
             </Link>
           </div>
         </div>
